@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 自适应图标前景：闪电符号，108x108 viewport 为标准尺寸 -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M60,28 L38,60 L52,60 L48,80 L70,48 L56,48 Z" />
+</vector>

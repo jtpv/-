@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">电耗计算</string>
+
+    <!-- ===== 主界面 ===== -->
+    <string name="label_vehicle">当前车辆</string>
+    <string name="stat_ev">平均电耗</string>
+    <string name="stat_fuel">平均油耗</string>
+    <string name="stat_charge_sum">累计充电</string>
+    <string name="stat_fuel_sum">累计加油</string>
+    <string name="unit_kwh">kWh</string>
+    <string name="unit_liter">L</string>
+    <string name="unit_kwh_100km">kWh/100km</string>
+    <string name="unit_l_100km">L/100km</string>
+    <string name="value_placeholder">--</string>
+    <string name="empty_records">暂无记录\n点击右下角 + 添加第一条</string>
+    <string name="action_add">添加记录</string>
+    <string name="action_settings">车辆设置</string>
+
+    <!-- ===== 记录编辑 ===== -->
+    <string name="title_add_record">新增记录</string>
+    <string name="title_edit_record">编辑记录</string>
+    <string name="type_charge">充电</string>
+    <string name="type_fuel">加油</string>
+    <string name="hint_date">日期 (yyyy-MM-dd)</string>
+    <string name="hint_amount_charge">充电量 (kWh)</string>
+    <string name="hint_amount_fuel">加油量 (L)</string>
+    <string name="hint_price">单价 (元)</string>
+    <string name="hint_cost">金额 (元)</string>
+    <string name="hint_odo_total">总里程 (km)</string>
+    <string name="hint_odo_ev">EV 里程 (km)</string>
+    <string name="hint_odo_hev">HEV 里程 (km)</string>
+    <string name="hint_note">备注</string>
+    <string name="label_is_full_charge">本次充满</string>
+    <string name="label_is_full_fuel">本次加满</string>
+    <string name="action_save">保存</string>
+    <string name="msg_invalid_amount">请输入有效数量</string>
+    <string name="msg_invalid_date">日期格式应为 yyyy-MM-dd</string>
+    <string name="msg_saved">已保存</string>
+
+    <!-- ===== 车辆设置 ===== -->
+    <string name="title_settings">车辆设置</string>
+    <string name="hint_vehicle_name">车辆名称</string>
+    <string name="label_preset">年款预设</string>
+    <string name="hint_battery">电池容量 (kWh)</string>
+    <string name="hint_tank">油箱容积 (L)</string>
+    <string name="msg_settings_saved">设置已保存</string>
+    <string name="tip_preset_note">不同年款电池与油箱差异较大，请按实际车型选择；选「自定义」可手工填写。</string>
+
+    <!-- 年款预设（秦 PLUS DM-i 各年款参数差异大，不可硬编码） -->
+    <string-array name="preset_names">
+        <item>秦PLUS DM-i 初代 55km</item>
+        <item>秦PLUS DM-i 初代 120km</item>
+        <item>秦PLUS DM-i 荣耀版 55km</item>
+        <item>秦PLUS DM-i 荣耀版 120km</item>
+        <item>秦PLUS DM-i 2025 智驾版 55km</item>
+        <item>秦PLUS DM-i 2025 智驾版 120km</item>
+        <item>自定义</item>
+    </string-array>
+</resources>

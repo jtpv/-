@@ -46,3 +46,17 @@ yarn-error.log*
 *.key
 credentials.json
 *credentials*
+
+# ===== Android / Gradle =====
+local.properties
+*.jks
+*.keystore
+.gradle/
+build/
+captures/
+.cxx/
+
+# gradle wrapper 的 jar 是二进制，本机无法获取，改由 CI 的官方 action 注入；
+# 但 .properties 是文本配置，需保留
+gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
