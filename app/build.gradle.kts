@@ -13,7 +13,7 @@ android {
         targetSdk = 34
         // 版本号每次出包递增：Android 以 versionCode 判断升级安装，
         // +1 才能在不卸载旧版的情况下直接覆盖安装
-        versionCode = 3
+        versionCode = 4
         versionName = "1.2"
     }
 

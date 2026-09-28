@@ -5,6 +5,10 @@ on:
     branches: [ main, master ]
   workflow_dispatch:        # 允许在网页手动触发，改一行字也能重新出包
 
+# Release 发布需要写权限；使用 CI 自动注入的 GITHUB_TOKEN，不依赖任何手工 PAT
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest   # 镜像预装 Android SDK，ANDROID_HOME 已设
@@ -49,3 +53,17 @@ jobs:
           name: app-debug-apk
           path: app/build/outputs/apk/debug/*.apk
           if-no-files-found: error   # 无产物则判失败，避免"看似成功却拿不到包"
+
+      # 同步发布到 Release：公开仓库的 Release 资产可免认证直接下载，
+      # 下载不再依赖 PAT（手工 token 会过期/被吊销，已多次造成交付阻塞）
+      - name: Publish APK to Release
+        run: |
+          # 从 build.gradle.kts 提取 versionCode 作为 tag，保证每次出包版本递增
+          VC=$(grep -oP 'versionCode\s*=\s*\K[0-9]+' app/build.gradle.kts)
+          TAG="v${VC}"
+          gh release create "$TAG" app/build/outputs/apk/debug/*.apk \
+            --title "电耗计算 $TAG" \
+            --notes "自动构建 $TAG（commit ${{ github.sha }}）" \
+            --prerelease
+        env:
+          GH_TOKEN: ${{ github.token }}
