@@ -22,6 +22,16 @@ jobs:
         with:
           gradle-version: '8.7'
 
+      # 持久化 debug 签名密钥：GitHub 每次构建都是全新虚拟机，
+      # 若不缓存 ~/.android，debug.keystore 每次重新生成，
+      # 手机端会因签名不一致拒绝覆盖安装、强制卸载重装（丢全部本地数据）。
+      # 固定 key 永不失效，首次生成后所有后续构建复用同一密钥。
+      - name: Cache debug keystore
+        uses: actions/cache@v4
+        with:
+          path: ~/.android
+          key: android-debug-keystore-v1
+
       - name: Ensure Android SDK components
         run: |
           SDKMANAGER="${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager"

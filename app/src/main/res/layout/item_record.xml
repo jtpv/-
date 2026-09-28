@@ -64,6 +64,25 @@
                 android:textSize="12sp" />
 
             <TextView
+                android:id="@+id/tvOdoTotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="@string/value_placeholder"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp" />
+
+            <!-- 每公里费用：本次费用 ÷ 与上次同类型记录的里程差，无基准时隐藏 -->
+            <TextView
+                android:id="@+id/tvPerKm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textColor="@color/text_primary"
+                android:textSize="12sp"
+                android:visibility="gone" />
+
+            <TextView
                 android:id="@+id/tvNote"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

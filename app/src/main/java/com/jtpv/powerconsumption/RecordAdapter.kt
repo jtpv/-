@@ -70,10 +70,22 @@ class RecordAdapter(
 
             binding.tvDate.text = r.date
 
+            // 里程分两行：电/油里程（参与口径统计的那个）与总里程
             binding.tvOdo.text = if (r.isCharge) {
-                String.format(Locale.US, "总里程 %d km · EV %d km", r.odoTotal, r.odoEv)
+                String.format(Locale.US, "电里程 %d km", r.odoEv)
             } else {
-                String.format(Locale.US, "总里程 %d km · HEV %d km", r.odoTotal, r.odoHev)
+                String.format(Locale.US, "油里程 %d km", r.odoHev)
+            }
+            binding.tvOdoTotal.text =
+                String.format(Locale.US, "总里程 %d km", r.odoTotal)
+
+            // 每公里费用：无基准（首条或里程未填）时隐藏该行
+            if (r.perKmCost > 0.0) {
+                binding.tvPerKm.visibility = View.VISIBLE
+                binding.tvPerKm.text =
+                    String.format(Locale.US, "每公里 ¥%.3f", r.perKmCost)
+            } else {
+                binding.tvPerKm.visibility = View.GONE
             }
 
             if (r.note.isBlank()) {

@@ -1,6 +1,8 @@
 package com.jtpv.powerconsumption
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -40,6 +42,30 @@ class RecordEditActivity : AppCompatActivity() {
         binding.btnSave.setOnClickListener { save() }
 
         fillForm()
+
+        // 单价 = 金额 ÷ 数量，自动计算填入。
+        // 放在 fillForm() 之后挂监听，避免回填表单时触发重算覆盖已存值。
+        // 只监听金额与数量两个框：用户手改单价仍以手改为准，
+        // 下次再动数量或金额时才重新覆盖。
+        val autoPrice = object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, a: Int, b: Int, c: Int) = Unit
+            override fun onTextChanged(s: CharSequence?, a: Int, b: Int, c: Int) = Unit
+            override fun afterTextChanged(s: Editable?) = recalcPrice()
+        }
+        binding.etAmount.addTextChangedListener(autoPrice)
+        binding.etCost.addTextChangedListener(autoPrice)
+    }
+
+    /** 金额与数量均有效时，把单价自动填为 金额 ÷ 数量（保留最多 4 位小数） */
+    private fun recalcPrice() {
+        val amount = binding.etAmount.text.toString().trim().toDoubleOrNull() ?: 0.0
+        val cost = binding.etCost.text.toString().trim().toDoubleOrNull() ?: 0.0
+        if (amount > 0.0 && cost > 0.0) {
+            var p = String.format(Locale.US, "%.4f", cost / amount)
+            // 去掉尾随零（1.5000 -> 1.5），避免输入框出现一串无意义的小数
+            p = p.trimEnd('0').trimEnd('.')
+            binding.etPrice.setText(p)
+        }
     }
 
     private fun isCharge(): Boolean = binding.rbCharge.isChecked

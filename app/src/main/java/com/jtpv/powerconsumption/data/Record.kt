@@ -22,7 +22,13 @@ data class Record(
     var odoEv: Long = 0L,
     var odoHev: Long = 0L,
     var isFull: Boolean = false,
-    var note: String = ""
+    var note: String = "",
+    /**
+     * 每公里费用（展示用，不入库）：本次费用 ÷ 与上次同类型记录的里程差。
+     * 充电看 EV 里程差、加油看 HEV 里程差——与电耗/油耗统计口径一致。
+     * 由 Repository.listRecords 填充，首条记录或里程未填时为 0。
+     */
+    var perKmCost: Double = 0.0
 ) {
     val isCharge: Boolean
         get() = type == TYPE_CHARGE

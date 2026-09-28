@@ -88,7 +88,36 @@ class Repository(private val helper: DbHelper) {
         ).use { c ->
             while (c.moveToNext()) out.add(readRecord(c))
         }
+        fillPerKmCost(out)
         return out
+    }
+
+    /**
+     * 填充每公里费用：本次费用 ÷ 与上次同类型记录的里程差。
+     * 充电用 EV 里程差、加油用 HEV 里程差——分母若用总里程会被另一种动力模式稀释。
+     * 列表按日期倒序返回，这里倒着走一遍即可按时间正序遍历；
+     * 里程读数为 0（未填）的记录既不参与计算也不更新基准，避免把基准拉回 0。
+     */
+    private fun fillPerKmCost(desc: List<Record>) {
+        var lastChargeEv = -1L
+        var lastFuelHev = -1L
+        for (r in desc.asReversed()) {
+            if (r.isCharge) {
+                if (r.odoEv > 0L) {
+                    if (lastChargeEv in 1 until r.odoEv && r.cost > 0.0) {
+                        r.perKmCost = r.cost / (r.odoEv - lastChargeEv)
+                    }
+                    lastChargeEv = r.odoEv
+                }
+            } else {
+                if (r.odoHev > 0L) {
+                    if (lastFuelHev in 1 until r.odoHev && r.cost > 0.0) {
+                        r.perKmCost = r.cost / (r.odoHev - lastFuelHev)
+                    }
+                    lastFuelHev = r.odoHev
+                }
+            }
+        }
     }
 
     fun getRecord(id: Long): Record? {
