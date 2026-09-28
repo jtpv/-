@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 费用录入 / 编辑表单：与补能记录表单同一规范，标签置于输入框上方 -->
+<!-- 费用录入 / 编辑表单：与补能表单同一规范——标签在左、输入框在右 -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -22,47 +22,59 @@
             android:layout_height="wrap_content"
             android:minHeight="44dp" />
 
-        <TextView
-            style="@style/FormLabel"
-            android:text="@string/label_date" />
+        <LinearLayout style="@style/LabelRow">
 
-        <EditText
-            android:id="@+id/etExpDate"
-            style="@style/FormInput"
-            android:inputType="date" />
+            <TextView
+                style="@style/RowLabel"
+                android:text="@string/label_date" />
 
-        <TextView
-            style="@style/FormLabel"
-            android:text="@string/label_expense_amount" />
+            <EditText
+                android:id="@+id/etExpDate"
+                style="@style/FieldText"
+                android:inputType="date" />
+        </LinearLayout>
 
-        <EditText
-            android:id="@+id/etExpAmount"
-            style="@style/FormInput"
-            android:inputType="numberDecimal" />
+        <LinearLayout style="@style/LabelRow">
 
-        <TextView
-            style="@style/FormLabel"
-            android:text="@string/label_expense_odo" />
+            <TextView
+                style="@style/RowLabel"
+                android:text="@string/label_expense_amount" />
 
-        <EditText
-            android:id="@+id/etExpOdo"
-            style="@style/FormInput"
-            android:inputType="number" />
+            <EditText
+                android:id="@+id/etExpAmount"
+                style="@style/FieldText"
+                android:inputType="numberDecimal" />
+        </LinearLayout>
 
-        <TextView
-            style="@style/FormLabel"
-            android:text="@string/label_shop" />
+        <LinearLayout style="@style/LabelRow">
 
-        <EditText
-            android:id="@+id/etExpShop"
-            style="@style/FormInput"
-            android:inputType="text" />
+            <TextView
+                style="@style/RowLabel"
+                android:text="@string/label_expense_odo" />
 
+            <EditText
+                android:id="@+id/etExpOdo"
+                style="@style/FieldText"
+                android:inputType="number" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/LabelRow">
+
+            <TextView
+                style="@style/RowLabel"
+                android:text="@string/label_shop" />
+
+            <EditText
+                android:id="@+id/etExpShop"
+                style="@style/FieldText"
+                android:inputType="text" />
+        </LinearLayout>
+
+        <!-- ===== 备注：内容可能较长（保养项目明细），保留整行多行输入 ===== -->
         <TextView
             style="@style/FormLabel"
             android:text="@string/label_note" />
 
-        <!-- 备注保留框内示例（保养项目怎么填），标签之外补充说明用途 -->
         <EditText
             android:id="@+id/etExpNote"
             style="@style/FormInput"

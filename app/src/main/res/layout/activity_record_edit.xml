@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   补能记录录入 / 编辑表单。
-  设计要点：每个输入项都有独立标签置于输入框上方，而非依赖框内 hint——
-  hint 在用户输入后即消失，且颜色浅不显眼；显式标签让表单含义始终可见。
+  布局规范：标签在左、输入框在右的横排行（LabelRow / FieldText 样式），
+  比竖排更紧凑，一眼可对照字段名与填写内容。
 -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -39,90 +39,113 @@
                 android:text="@string/type_fuel" />
         </RadioGroup>
 
-        <!-- ===== 基本信息 ===== -->
-        <TextView
-            style="@style/FormLabel"
-            android:text="@string/label_date" />
+        <!-- ===== 基本信息：标签在左、输入框在右 ===== -->
+        <LinearLayout style="@style/LabelRow">
 
-        <EditText
-            android:id="@+id/etDate"
-            style="@style/FormInput"
-            android:inputType="date" />
+            <TextView
+                style="@style/RowLabel"
+                android:text="@string/label_date" />
+
+            <EditText
+                android:id="@+id/etDate"
+                style="@style/FieldText"
+                android:inputType="date" />
+        </LinearLayout>
 
         <!-- 标签文字随类型切换：充电量 (kWh) / 加油量 (L)，由 applyTypeUi() 控制 -->
-        <TextView
-            android:id="@+id/tvLabelAmount"
-            style="@style/FormLabel"
-            android:text="@string/label_amount_charge" />
+        <LinearLayout style="@style/LabelRow">
 
-        <EditText
-            android:id="@+id/etAmount"
-            style="@style/FormInput"
-            android:inputType="numberDecimal" />
+            <TextView
+                android:id="@+id/tvLabelAmount"
+                style="@style/RowLabel"
+                android:text="@string/label_amount_charge" />
 
-        <TextView
-            style="@style/FormLabel"
-            android:text="@string/label_price" />
+            <EditText
+                android:id="@+id/etAmount"
+                style="@style/FieldText"
+                android:inputType="numberDecimal" />
+        </LinearLayout>
 
-        <EditText
-            android:id="@+id/etPrice"
-            style="@style/FormInput"
-            android:inputType="numberDecimal" />
+        <LinearLayout style="@style/LabelRow">
 
-        <TextView
-            style="@style/FormLabel"
-            android:text="@string/label_cost" />
+            <TextView
+                style="@style/RowLabel"
+                android:text="@string/label_price" />
 
-        <EditText
-            android:id="@+id/etCost"
-            style="@style/FormInput"
-            android:inputType="numberDecimal" />
+            <EditText
+                android:id="@+id/etPrice"
+                style="@style/FieldText"
+                android:inputType="numberDecimal" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/LabelRow">
+
+            <TextView
+                style="@style/RowLabel"
+                android:text="@string/label_cost" />
+
+            <EditText
+                android:id="@+id/etCost"
+                style="@style/FieldText"
+                android:inputType="numberDecimal" />
+        </LinearLayout>
 
         <!-- ===== 里程（DM-i 提供 EV / HEV 两个独立计数器） ===== -->
-        <TextView
-            style="@style/FormLabel"
-            android:text="@string/label_odo_total" />
+        <LinearLayout style="@style/LabelRow">
 
-        <EditText
-            android:id="@+id/etOdoTotal"
-            style="@style/FormInput"
-            android:inputType="number" />
+            <TextView
+                style="@style/RowLabel"
+                android:text="@string/label_odo_total" />
 
-        <!-- EV / HEV 标签与输入框的可见性必须同步切换，否则会出现「只有框没有标签」 -->
-        <TextView
-            android:id="@+id/tvLabelOdoEv"
-            style="@style/FormLabel"
-            android:text="@string/label_odo_ev" />
+            <EditText
+                android:id="@+id/etOdoTotal"
+                style="@style/FieldText"
+                android:inputType="number" />
+        </LinearLayout>
 
-        <EditText
-            android:id="@+id/etOdoEv"
-            style="@style/FormInput"
-            android:inputType="number" />
+        <!-- EV / HEV 整行的可见性必须同步切换，否则会残留孤立的标签或输入框 -->
+        <LinearLayout
+            android:id="@+id/rowOdoEv"
+            style="@style/LabelRow">
 
-        <TextView
-            android:id="@+id/tvLabelOdoHev"
-            style="@style/FormLabel"
-            android:text="@string/label_odo_hev" />
+            <TextView
+                style="@style/RowLabel"
+                android:text="@string/label_odo_ev" />
 
-        <EditText
-            android:id="@+id/etOdoHev"
-            style="@style/FormInput"
-            android:inputType="number" />
+            <EditText
+                android:id="@+id/etOdoEv"
+                style="@style/FieldText"
+                android:inputType="number" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/rowOdoHev"
+            style="@style/LabelRow">
+
+            <TextView
+                style="@style/RowLabel"
+                android:text="@string/label_odo_hev" />
+
+            <EditText
+                android:id="@+id/etOdoHev"
+                style="@style/FieldText"
+                android:inputType="number" />
+        </LinearLayout>
 
         <!-- ===== 是否充满 / 加满（加满法是唯一独立校验手段） ===== -->
         <Switch
             android:id="@+id/swFull"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:minHeight="44dp"
             android:text="@string/label_is_full_charge" />
 
+        <!-- ===== 备注：内容可能较长（桩位置、跳枪异常），保留整行多行输入 ===== -->
         <TextView
             style="@style/FormLabel"
             android:text="@string/label_note" />
 
-        <!-- 多行输入：充电桩位置、跳枪异常等长内容更易填写 -->
         <EditText
             android:id="@+id/etNote"
             style="@style/FormInput"

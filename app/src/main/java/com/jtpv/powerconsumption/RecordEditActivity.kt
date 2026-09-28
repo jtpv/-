@@ -56,13 +56,12 @@ class RecordEditActivity : AppCompatActivity() {
             if (charge) R.string.label_is_full_charge else R.string.label_is_full_fuel
         )
 
-        // 充电记录关注 EV 里程，加油记录关注 HEV 里程
+        // 充电记录关注 EV 里程，加油记录关注 HEV 里程；
+        // 布局已把标签与输入框包成整行（rowOdoEv / rowOdoHev），整行显隐即可，不会残留孤立元素
         val evVisibility = if (charge) View.VISIBLE else View.GONE
         val hevVisibility = if (charge) View.GONE else View.VISIBLE
-        binding.tvLabelOdoEv.visibility = evVisibility
-        binding.etOdoEv.visibility = evVisibility
-        binding.tvLabelOdoHev.visibility = hevVisibility
-        binding.etOdoHev.visibility = hevVisibility
+        binding.rowOdoEv.visibility = evVisibility
+        binding.rowOdoHev.visibility = hevVisibility
     }
 
     private fun fillForm() {

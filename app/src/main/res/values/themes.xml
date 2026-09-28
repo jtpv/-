@@ -67,6 +67,36 @@
         <item name="android:minHeight">44dp</item>
     </style>
 
+    <!-- 横排行容器：标签在左、输入框在右 -->
+    <style name="LabelRow">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+    </style>
+
+    <!-- 行内标签：固定比例占宽，右对齐使字段名与输入框间距均匀 -->
+    <style name="RowLabel">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">2</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <!-- 行内输入框：标签:输入 = 2:3，留足数字输入空间 -->
+    <style name="FieldText">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">3</item>
+        <item name="android:importantForAutofill">no</item>
+        <item name="android:minHeight">44dp</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
     <!-- 卡片容器 -->
     <style name="CardBox">
         <item name="android:layout_width">match_parent</item>
