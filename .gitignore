@@ -60,3 +60,6 @@ captures/
 # 但 .properties 是文本配置，需保留
 gradle/wrapper/gradle-wrapper.jar
 !gradle/wrapper/gradle-wrapper.properties
+
+# ===== 构建产物分发目录（从 CI 下载的 APK） =====
+dist/
