@@ -3,6 +3,8 @@ package com.jtpv.powerconsumption
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jtpv.powerconsumption.data.DbHelper
@@ -35,7 +37,10 @@ class ReminderActivity : AppCompatActivity() {
         repo = Repository(DbHelper(applicationContext))
         title = getString(R.string.title_reminder)
 
-        adapter = ExpenseAdapter { expense -> openEditor(expense.id) }
+        adapter = ExpenseAdapter(
+            onClick = { expense -> openEditor(expense.id) },
+            onLongClick = { expense -> confirmDelete(expense.id) }
+        )
         binding.recyclerMaint.layoutManager = LinearLayoutManager(this)
         binding.recyclerMaint.adapter = adapter
         binding.fabAddMaint.setOnClickListener { openEditor(0L) }
@@ -90,5 +95,19 @@ class ReminderActivity : AppCompatActivity() {
         intent.putExtra(ExpenseEditActivity.EXTRA_VEHICLE_ID, vehicleId)
         intent.putExtra(ExpenseEditActivity.EXTRA_PRESET_TYPE, ExpenseType.MAINTENANCE)
         startActivity(intent)
+    }
+
+    /** 长按删除：保养记录本质是 expense 行，删除后须同时刷新提醒计算 */
+    private fun confirmDelete(expenseId: Long) {
+        AlertDialog.Builder(this)
+            .setTitle(R.string.action_delete)
+            .setMessage(R.string.msg_confirm_delete_expense)
+            .setPositiveButton(R.string.action_delete) { _, _ ->
+                repo.deleteExpense(expenseId)
+                Toast.makeText(this, R.string.msg_deleted, Toast.LENGTH_SHORT).show()
+                load()
+            }
+            .setNegativeButton(android.R.string.cancel, null)
+            .show()
     }
 }

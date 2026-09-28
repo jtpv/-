@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jtpv.powerconsumption.data.DbHelper
@@ -48,7 +50,10 @@ class HomeFragment : Fragment() {
         // 用 applicationContext 建库：Fragment 随配置变更频繁重建，持有 Activity 引用易泄漏
         repo = Repository(DbHelper(requireContext().applicationContext))
 
-        adapter = RecordAdapter { record -> openEditor(record.id) }
+        adapter = RecordAdapter(
+            onClick = { record -> openEditor(record.id) },
+            onLongClick = { record -> confirmDelete(record.id) }
+        )
         binding.recyclerRecent.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerRecent.adapter = adapter
 
@@ -169,5 +174,21 @@ class HomeFragment : Fragment() {
         intent.putExtra(RecordEditActivity.EXTRA_RECORD_ID, recordId)
         intent.putExtra(RecordEditActivity.EXTRA_VEHICLE_ID, vehicleId)
         startActivity(intent)
+    }
+
+    /** 长按删除：与补能页保持一致的交互，删除需二次确认 */
+    private fun confirmDelete(recordId: Long) {
+        AlertDialog.Builder(requireContext())
+            .setTitle(R.string.action_delete)
+            .setMessage(R.string.msg_confirm_delete_record)
+            .setPositiveButton(R.string.action_delete) { _, _ ->
+                repo.deleteRecord(recordId)
+                Toast.makeText(
+                    requireContext(), R.string.msg_deleted, Toast.LENGTH_SHORT
+                ).show()
+                refresh()
+            }
+            .setNegativeButton(android.R.string.cancel, null)
+            .show()
     }
 }
