@@ -9,8 +9,16 @@ import com.jtpv.powerconsumption.data.Record
 import com.jtpv.powerconsumption.databinding.ItemRecordBinding
 import java.util.Locale
 
-/** 记录列表适配器 */
-class RecordAdapter(private val onClick: (Record) -> Unit) :
+/**
+ * 记录列表适配器。
+ *
+ * 交互约定：单击进入编辑，长按弹出删除确认——
+ * 删除属破坏性操作，必须经对话框二次确认，避免误触丢数据。
+ */
+class RecordAdapter(
+    private val onClick: (Record) -> Unit,
+    private val onLongClick: (Record) -> Unit
+) :
     RecyclerView.Adapter<RecordAdapter.RecordViewHolder>() {
 
     private val items = ArrayList<Record>()
@@ -82,6 +90,8 @@ class RecordAdapter(private val onClick: (Record) -> Unit) :
             }
 
             binding.root.setOnClickListener { onClick(r) }
+            // 返回 true 表示长按事件已消费，不再触发单击
+            binding.root.setOnLongClickListener { onLongClick(r); true }
         }
     }
 }

@@ -44,20 +44,25 @@ class RecordEditActivity : AppCompatActivity() {
 
     private fun isCharge(): Boolean = binding.rbCharge.isChecked
 
-    /** 按记录类型切换提示文字与字段可见性 */
+    /** 按记录类型切换标签文字与字段可见性（标签与输入框必须同步显隐） */
     private fun applyTypeUi() {
         val charge = isCharge()
 
-        binding.etAmount.hint = getString(
-            if (charge) R.string.hint_amount_charge else R.string.hint_amount_fuel
+        // 数量标签随类型切换：充电量 (kWh) / 加油量 (L)
+        binding.tvLabelAmount.text = getString(
+            if (charge) R.string.label_amount_charge else R.string.label_amount_fuel
         )
         binding.swFull.text = getString(
             if (charge) R.string.label_is_full_charge else R.string.label_is_full_fuel
         )
 
         // 充电记录关注 EV 里程，加油记录关注 HEV 里程
-        binding.etOdoEv.visibility = if (charge) View.VISIBLE else View.GONE
-        binding.etOdoHev.visibility = if (charge) View.GONE else View.VISIBLE
+        val evVisibility = if (charge) View.VISIBLE else View.GONE
+        val hevVisibility = if (charge) View.GONE else View.VISIBLE
+        binding.tvLabelOdoEv.visibility = evVisibility
+        binding.etOdoEv.visibility = evVisibility
+        binding.tvLabelOdoHev.visibility = hevVisibility
+        binding.etOdoHev.visibility = hevVisibility
     }
 
     private fun fillForm() {

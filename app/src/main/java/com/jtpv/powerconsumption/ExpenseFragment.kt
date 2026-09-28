@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jtpv.powerconsumption.data.DbHelper
@@ -46,7 +48,10 @@ class ExpenseFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         repo = Repository(DbHelper(requireContext().applicationContext))
 
-        adapter = ExpenseAdapter { expense -> openEditor(expense.id) }
+        adapter = ExpenseAdapter(
+            onClick = { expense -> openEditor(expense.id) },
+            onLongClick = { expense -> confirmDelete(expense.id) }
+        )
         binding.recyclerExpenses.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerExpenses.adapter = adapter
         binding.fabAddExpense.setOnClickListener { openEditor(0L) }
@@ -155,5 +160,21 @@ class ExpenseFragment : Fragment() {
         intent.putExtra(ExpenseEditActivity.EXTRA_EXPENSE_ID, expenseId)
         intent.putExtra(ExpenseEditActivity.EXTRA_VEHICLE_ID, vehicleId)
         startActivity(intent)
+    }
+
+    /** 长按删除：费用记录参与成本汇总，误删同样破坏统计口径，故必须二次确认 */
+    private fun confirmDelete(expenseId: Long) {
+        AlertDialog.Builder(requireContext())
+            .setTitle(R.string.action_delete)
+            .setMessage(R.string.msg_confirm_delete_expense)
+            .setPositiveButton(R.string.action_delete) { _, _ ->
+                repo.deleteExpense(expenseId)
+                Toast.makeText(
+                    requireContext(), R.string.msg_deleted, Toast.LENGTH_SHORT
+                ).show()
+                refresh()
+            }
+            .setNegativeButton(android.R.string.cancel, null)
+            .show()
     }
 }

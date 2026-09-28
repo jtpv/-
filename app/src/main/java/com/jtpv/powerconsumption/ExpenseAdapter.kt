@@ -8,8 +8,15 @@ import com.jtpv.powerconsumption.data.Expense
 import com.jtpv.powerconsumption.databinding.ItemExpenseBinding
 import java.util.Locale
 
-/** 费用列表适配器 */
-class ExpenseAdapter(private val onClick: (Expense) -> Unit) :
+/**
+ * 费用列表适配器。
+ *
+ * 交互与补能记录保持一致：单击编辑、长按删除（删除需经确认）。
+ */
+class ExpenseAdapter(
+    private val onClick: (Expense) -> Unit,
+    private val onLongClick: (Expense) -> Unit
+) :
     RecyclerView.Adapter<ExpenseAdapter.ExpenseViewHolder>() {
 
     private val items = ArrayList<Expense>()
@@ -68,6 +75,8 @@ class ExpenseAdapter(private val onClick: (Expense) -> Unit) :
             }
 
             binding.root.setOnClickListener { onClick(e) }
+            // 返回 true 表示长按事件已消费，不再触发单击
+            binding.root.setOnLongClickListener { onLongClick(e); true }
         }
     }
 }

@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  补能记录录入 / 编辑表单。
+  设计要点：每个输入项都有独立标签置于输入框上方，而非依赖框内 hint——
+  hint 在用户输入后即消失，且颜色浅不显眼；显式标签让表单含义始终可见。
+-->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -35,70 +40,74 @@
         </RadioGroup>
 
         <!-- ===== 基本信息 ===== -->
+        <TextView
+            style="@style/FormLabel"
+            android:text="@string/label_date" />
+
         <EditText
             android:id="@+id/etDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:hint="@string/hint_date"
-            android:importantForAutofill="no"
-            android:inputType="date"
-            android:minHeight="44dp" />
+            style="@style/FormInput"
+            android:inputType="date" />
+
+        <!-- 标签文字随类型切换：充电量 (kWh) / 加油量 (L)，由 applyTypeUi() 控制 -->
+        <TextView
+            android:id="@+id/tvLabelAmount"
+            style="@style/FormLabel"
+            android:text="@string/label_amount_charge" />
 
         <EditText
             android:id="@+id/etAmount"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/hint_amount_charge"
-            android:importantForAutofill="no"
-            android:inputType="numberDecimal"
-            android:minHeight="44dp" />
+            style="@style/FormInput"
+            android:inputType="numberDecimal" />
+
+        <TextView
+            style="@style/FormLabel"
+            android:text="@string/label_price" />
 
         <EditText
             android:id="@+id/etPrice"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/hint_price"
-            android:importantForAutofill="no"
-            android:inputType="numberDecimal"
-            android:minHeight="44dp" />
+            style="@style/FormInput"
+            android:inputType="numberDecimal" />
+
+        <TextView
+            style="@style/FormLabel"
+            android:text="@string/label_cost" />
 
         <EditText
             android:id="@+id/etCost"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/hint_cost"
-            android:importantForAutofill="no"
-            android:inputType="numberDecimal"
-            android:minHeight="44dp" />
+            style="@style/FormInput"
+            android:inputType="numberDecimal" />
 
         <!-- ===== 里程（DM-i 提供 EV / HEV 两个独立计数器） ===== -->
+        <TextView
+            style="@style/FormLabel"
+            android:text="@string/label_odo_total" />
+
         <EditText
             android:id="@+id/etOdoTotal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/hint_odo_total"
-            android:importantForAutofill="no"
-            android:inputType="number"
-            android:minHeight="44dp" />
+            style="@style/FormInput"
+            android:inputType="number" />
+
+        <!-- EV / HEV 标签与输入框的可见性必须同步切换，否则会出现「只有框没有标签」 -->
+        <TextView
+            android:id="@+id/tvLabelOdoEv"
+            style="@style/FormLabel"
+            android:text="@string/label_odo_ev" />
 
         <EditText
             android:id="@+id/etOdoEv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/hint_odo_ev"
-            android:importantForAutofill="no"
-            android:inputType="number"
-            android:minHeight="44dp" />
+            style="@style/FormInput"
+            android:inputType="number" />
+
+        <TextView
+            android:id="@+id/tvLabelOdoHev"
+            style="@style/FormLabel"
+            android:text="@string/label_odo_hev" />
 
         <EditText
             android:id="@+id/etOdoHev"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/hint_odo_hev"
-            android:importantForAutofill="no"
-            android:inputType="number"
-            android:minHeight="44dp" />
+            style="@style/FormInput"
+            android:inputType="number" />
 
         <!-- ===== 是否充满 / 加满（加满法是唯一独立校验手段） ===== -->
         <Switch
@@ -109,14 +118,16 @@
             android:minHeight="44dp"
             android:text="@string/label_is_full_charge" />
 
+        <TextView
+            style="@style/FormLabel"
+            android:text="@string/label_note" />
+
+        <!-- 多行输入：充电桩位置、跳枪异常等长内容更易填写 -->
         <EditText
             android:id="@+id/etNote"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/hint_note"
-            android:importantForAutofill="no"
-            android:inputType="text"
-            android:minHeight="44dp" />
+            style="@style/FormInput"
+            android:gravity="top"
+            android:inputType="textMultiLine" />
 
         <Button
             android:id="@+id/btnSave"

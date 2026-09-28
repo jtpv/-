@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jtpv.powerconsumption.data.DbHelper
@@ -42,7 +44,10 @@ class RecordFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         repo = Repository(DbHelper(requireContext().applicationContext))
 
-        adapter = RecordAdapter { record -> openEditor(record.id) }
+        adapter = RecordAdapter(
+            onClick = { record -> openEditor(record.id) },
+            onLongClick = { record -> confirmDelete(record.id) }
+        )
         binding.recyclerRecords.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerRecords.adapter = adapter
         binding.fabAdd.setOnClickListener { openEditor(0L) }
@@ -135,5 +140,22 @@ class RecordFragment : Fragment() {
         intent.putExtra(RecordEditActivity.EXTRA_RECORD_ID, recordId)
         intent.putExtra(RecordEditActivity.EXTRA_VEHICLE_ID, vehicleId)
         startActivity(intent)
+    }
+
+    /** 长按删除：补能记录参与电耗 / 油耗统计，误删会破坏口径，故必须二次确认 */
+    private fun confirmDelete(recordId: Long) {
+        AlertDialog.Builder(requireContext())
+            .setTitle(R.string.action_delete)
+            .setMessage(R.string.msg_confirm_delete_record)
+            .setPositiveButton(R.string.action_delete) { _, _ ->
+                repo.deleteRecord(recordId)
+                Toast.makeText(
+                    requireContext(), R.string.msg_deleted, Toast.LENGTH_SHORT
+                ).show()
+                refresh()
+            }
+            // 取消键直接用系统文案，避免资源冗余
+            .setNegativeButton(android.R.string.cancel, null)
+            .show()
     }
 }

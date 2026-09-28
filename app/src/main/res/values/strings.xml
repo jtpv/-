@@ -25,7 +25,7 @@
     <string name="unit_yuan_km">元/km</string>
     <string name="unit_km">km</string>
     <string name="value_placeholder">--</string>
-    <string name="empty_records">暂无记录\n点击右下角 + 添加第一条</string>
+    <string name="empty_records">暂无记录\n点击右下角 + 添加第一条\n点击记录可编辑 · 长按可删除</string>
     <string name="action_add">添加记录</string>
     <string name="action_settings">车辆设置</string>
 
@@ -34,21 +34,28 @@
     <string name="title_edit_record">编辑记录</string>
     <string name="type_charge">充电</string>
     <string name="type_fuel">加油</string>
-    <string name="hint_date">日期 (yyyy-MM-dd)</string>
-    <string name="hint_amount_charge">充电量 (kWh)</string>
-    <string name="hint_amount_fuel">加油量 (L)</string>
-    <string name="hint_price">单价 (元)</string>
-    <string name="hint_cost">金额 (元)</string>
-    <string name="hint_odo_total">总里程 (km)</string>
-    <string name="hint_odo_ev">EV 里程 (km)</string>
-    <string name="hint_odo_hev">HEV 里程 (km)</string>
-    <string name="hint_note">备注</string>
     <string name="label_is_full_charge">本次充满</string>
     <string name="label_is_full_fuel">本次加满</string>
     <string name="action_save">保存</string>
     <string name="msg_invalid_amount">请输入有效数量</string>
     <string name="msg_invalid_date">日期格式应为 yyyy-MM-dd</string>
     <string name="msg_saved">已保存</string>
+    <string name="label_note">备注</string>
+    <string name="label_date">日期 (yyyy-MM-dd)</string>
+    <string name="label_amount_charge">充电量 (kWh)</string>
+    <string name="label_amount_fuel">加油量 (L)</string>
+    <string name="label_price">单价 (元)</string>
+    <string name="label_cost">金额 (元)</string>
+    <string name="label_odo_total">总里程 (km)</string>
+    <string name="label_odo_ev">EV 里程 (km)</string>
+    <string name="label_odo_hev">HEV 里程 (km)</string>
+    <string name="label_expense_amount">金额 (元)</string>
+    <string name="label_expense_odo">当时里程 (km)</string>
+    <string name="label_shop">商家 / 门店</string>
+    <string name="action_delete">删除</string>
+    <string name="msg_deleted">已删除</string>
+    <string name="msg_confirm_delete_record">确定删除这条补能记录吗？删除后无法恢复。</string>
+    <string name="msg_confirm_delete_expense">确定删除这条费用记录吗？删除后无法恢复。</string>
 
     <!-- ===== 车辆设置 ===== -->
     <string name="title_settings">补能参数</string>
@@ -96,13 +103,9 @@
     <string name="expense_summary_format">合计 ¥%1$.2f · %2$d 笔</string>
     <string name="title_add_expense">新增费用</string>
     <string name="title_edit_expense">编辑费用</string>
-    <string name="hint_expense_amount">金额 (元)</string>
-    <string name="hint_expense_odo">当时里程 (km)</string>
-    <string name="hint_shop">商家 / 门店</string>
-    <string name="hint_expense_note">备注（保养可填保养项目）</string>
-    <string name="empty_expenses">暂无费用记录\n点击右下角 + 添加第一条</string>
+    <string name="hint_expense_note">保养可填保养项目</string>
+    <string name="empty_expenses">暂无费用记录\n点击右下角 + 添加第一条\n点击记录可编辑 · 长按可删除</string>
     <string name="msg_invalid_expense_amount">请输入有效金额</string>
-    <string name="msg_deleted">已删除</string>
 
     <!-- 费用类型名：顺序必须与 ExpenseType.all 严格一致 -->
     <string-array name="expense_type_names">
