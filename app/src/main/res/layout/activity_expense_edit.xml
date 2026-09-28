@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/page_bg"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            style="@style/FormLabel"
+            android:text="@string/label_expense_type" />
+
+        <Spinner
+            android:id="@+id/spinnerType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="44dp" />
+
+        <EditText
+            android:id="@+id/etExpDate"
+            style="@style/FormInput"
+            android:layout_marginTop="8dp"
+            android:hint="@string/hint_date"
+            android:inputType="date" />
+
+        <EditText
+            android:id="@+id/etExpAmount"
+            style="@style/FormInput"
+            android:hint="@string/hint_expense_amount"
+            android:inputType="numberDecimal" />
+
+        <EditText
+            android:id="@+id/etExpOdo"
+            style="@style/FormInput"
+            android:hint="@string/hint_expense_odo"
+            android:inputType="number" />
+
+        <EditText
+            android:id="@+id/etExpShop"
+            style="@style/FormInput"
+            android:hint="@string/hint_shop"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/etExpNote"
+            style="@style/FormInput"
+            android:hint="@string/hint_expense_note"
+            android:inputType="text" />
+
+        <Button
+            android:id="@+id/btnSaveExpense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:minHeight="48dp"
+            android:text="@string/action_save" />
+    </LinearLayout>
+</ScrollView>

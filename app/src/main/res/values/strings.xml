@@ -2,16 +2,28 @@
 <resources>
     <string name="app_name">电耗计算</string>
 
-    <!-- ===== 主界面 ===== -->
+    <!-- ===== 底部导航 ===== -->
+    <string name="nav_home">首页</string>
+    <string name="nav_record">补能</string>
+    <string name="nav_expense">费用</string>
+    <string name="nav_report">报表</string>
+    <string name="nav_profile">我的</string>
+
+    <!-- ===== 主界面 / 记录页 ===== -->
     <string name="label_vehicle">当前车辆</string>
     <string name="stat_ev">平均电耗</string>
     <string name="stat_fuel">平均油耗</string>
     <string name="stat_charge_sum">累计充电</string>
     <string name="stat_fuel_sum">累计加油</string>
+    <string name="stat_cost_sum">累计费用</string>
+    <string name="stat_cost_per_km">每公里成本</string>
     <string name="unit_kwh">kWh</string>
     <string name="unit_liter">L</string>
     <string name="unit_kwh_100km">kWh/100km</string>
     <string name="unit_l_100km">L/100km</string>
+    <string name="unit_yuan">元</string>
+    <string name="unit_yuan_km">元/km</string>
+    <string name="unit_km">km</string>
     <string name="value_placeholder">--</string>
     <string name="empty_records">暂无记录\n点击右下角 + 添加第一条</string>
     <string name="action_add">添加记录</string>
@@ -39,13 +51,111 @@
     <string name="msg_saved">已保存</string>
 
     <!-- ===== 车辆设置 ===== -->
-    <string name="title_settings">车辆设置</string>
+    <string name="title_settings">补能参数</string>
     <string name="hint_vehicle_name">车辆名称</string>
     <string name="label_preset">年款预设</string>
     <string name="hint_battery">电池容量 (kWh)</string>
     <string name="hint_tank">油箱容积 (L)</string>
     <string name="msg_settings_saved">设置已保存</string>
     <string name="tip_preset_note">不同年款电池与油箱差异较大，请按实际车型选择；选「自定义」可手工填写。</string>
+
+    <!-- ===== 首页 ===== -->
+    <string name="section_reminder">到期提醒</string>
+    <string name="section_kpi">关键指标</string>
+    <string name="section_recent">最近补能</string>
+    <string name="section_maint">保养概览</string>
+    <string name="home_no_reminder">暂无待办提醒。前往「我的 → 车辆档案」填写到期日即可开启。</string>
+    <string name="home_no_recent">暂无补能记录</string>
+    <string name="home_maint_unset">尚未记录保养，前往「我的 → 保养与提醒」添加</string>
+
+    <!-- ===== 到期提醒 ===== -->
+    <string name="title_reminder">保养与提醒</string>
+    <string name="reminder_insurance">保险到期</string>
+    <string name="reminder_inspection">年检到期</string>
+    <string name="reminder_license">驾照到期</string>
+    <string name="reminder_maintenance">下次保养</string>
+    <string name="reminder_days_left">剩余 %1$d 天</string>
+    <string name="reminder_days_overdue">已逾期 %1$d 天</string>
+    <string name="reminder_due_today">今天到期</string>
+    <string name="reminder_unset">未设置</string>
+    <string name="reminder_maint_km_left">距下次保养还有 %1$d km</string>
+    <string name="reminder_maint_km_over">已超保养里程 %1$d km</string>
+    <string name="reminder_maint_km_unset">未设置保养间隔里程</string>
+    <string name="label_maintenance_records">保养记录</string>
+    <string name="empty_maintenance">暂无保养记录\n点击右下角 + 添加第一条</string>
+    <string name="action_add_maintenance">添加保养</string>
+    <string name="maint_last_date">上次保养日期：%1$s</string>
+    <string name="maint_last_odo">上次保养里程：%1$d km</string>
+    <string name="maint_next_odo">下次保养里程：%1$d km</string>
+    <string name="maint_next_date">下次保养日期：%1$s</string>
+
+    <!-- ===== 费用记账 ===== -->
+    <string name="title_expense">费用记账</string>
+    <string name="label_expense_type">费用类型</string>
+    <string name="expense_filter_all">全部类型</string>
+    <string name="expense_summary_format">合计 ¥%1$.2f · %2$d 笔</string>
+    <string name="title_add_expense">新增费用</string>
+    <string name="title_edit_expense">编辑费用</string>
+    <string name="hint_expense_amount">金额 (元)</string>
+    <string name="hint_expense_odo">当时里程 (km)</string>
+    <string name="hint_shop">商家 / 门店</string>
+    <string name="hint_expense_note">备注（保养可填保养项目）</string>
+    <string name="empty_expenses">暂无费用记录\n点击右下角 + 添加第一条</string>
+    <string name="msg_invalid_expense_amount">请输入有效金额</string>
+    <string name="msg_deleted">已删除</string>
+
+    <!-- 费用类型名：顺序必须与 ExpenseType.all 严格一致 -->
+    <string-array name="expense_type_names">
+        <item>保养</item>
+        <item>维修</item>
+        <item>保险</item>
+        <item>年检</item>
+        <item>停车</item>
+        <item>过路费</item>
+        <item>洗车美容</item>
+        <item>违章罚款</item>
+        <item>装饰配件</item>
+        <item>其他</item>
+    </string-array>
+
+    <!-- ===== 统计报表 ===== -->
+    <string name="title_report">统计报表</string>
+    <string name="report_monthly_title">近 6 个月费用趋势</string>
+    <string name="report_breakdown_title">费用构成</string>
+    <string name="report_no_data">暂无数据</string>
+    <string name="report_total_cost">总费用</string>
+    <string name="report_month_avg">月均费用</string>
+    <string name="report_cost_per_km">每公里成本</string>
+    <string name="report_odo_total">统计里程</string>
+    <string name="report_charge_cost">充电费用</string>
+    <string name="report_fuel_cost">加油费用</string>
+    <string name="report_other_cost">其他费用</string>
+    <string name="report_no_expense">暂无其他费用记录</string>
+
+    <!-- ===== 我的 / 车辆档案 ===== -->
+    <string name="title_profile">我的</string>
+    <string name="row_vehicle_profile">车辆档案与提醒</string>
+    <string name="row_refuel_params">补能参数设置</string>
+    <string name="row_maintenance">保养与提醒</string>
+    <string name="row_about">关于</string>
+    <string name="profile_subtitle_empty">未填写档案信息</string>
+    <string name="about_text">电耗计算 v1.1\n面向插电混动车型的补能电耗、亏电油耗与用车成本记录工具。\n数据全部保存在本机，不联网、不上传。</string>
+
+    <string name="title_vehicle_profile">车辆档案与提醒</string>
+    <string name="label_profile_basic">基本信息</string>
+    <string name="label_profile_expiry">证照到期</string>
+    <string name="label_profile_maint">保养规则</string>
+    <string name="hint_plate">车牌号</string>
+    <string name="hint_model">品牌车型</string>
+    <string name="hint_purchase_date">购车日期 (yyyy-MM-dd)</string>
+    <string name="hint_odo_current">当前总里程 (km)</string>
+    <string name="hint_insurance_expiry">保险到期日 (yyyy-MM-dd)</string>
+    <string name="hint_inspection_expiry">年检到期日 (yyyy-MM-dd)</string>
+    <string name="hint_license_expiry">驾照到期日 (yyyy-MM-dd)</string>
+    <string name="hint_maint_km">保养间隔里程 (km)</string>
+    <string name="hint_maint_month">保养间隔月数</string>
+    <string name="msg_profile_saved">档案已保存</string>
+    <string name="tip_profile_note">到期日留空表示不提醒；日期需为 yyyy-MM-dd 格式。保养间隔填 0 表示不按该项提醒。</string>
 
     <!-- 年款预设（秦 PLUS DM-i 各年款参数差异大，不可硬编码） -->
     <string-array name="preset_names">

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 底部导航项配色：选中态用主题色，未选中态用次要文字色 -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/purple_500" android:state_checked="true" />
+    <item android:color="@color/text_secondary" />
+</selector>

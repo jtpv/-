@@ -1,123 +1,127 @@
 package com.jtpv.powerconsumption
 
-import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.jtpv.powerconsumption.data.DbHelper
-import com.jtpv.powerconsumption.data.Repository
-import com.jtpv.powerconsumption.data.Vehicle
+import androidx.fragment.app.Fragment
+import com.google.android.material.navigation.NavigationBarView
 import com.jtpv.powerconsumption.databinding.ActivityMainBinding
-import java.util.Locale
 
-/** 主界面：统计概览 + 记录列表 */
+/**
+ * 主容器：承载五个功能页并切换显示。
+ *
+ * 采用「一次性全部 add 后切换 show/hide」而非 replace：
+ * replace 会销毁上一个 Fragment 的视图，回来时滚动位置与输入内容全部丢失，
+ * 对记录类应用是明显的体验缺陷。
+ */
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var repo: Repository
-    private lateinit var adapter: RecordAdapter
 
-    private var vehicles: List<Vehicle> = emptyList()
-    private var currentVehicleId: Long = 0L
+    private lateinit var homeFragment: Fragment
+    private lateinit var recordFragment: Fragment
+    private lateinit var expenseFragment: Fragment
+    private lateinit var reportFragment: Fragment
+    private lateinit var profileFragment: Fragment
+
+    private var currentNavId: Int = R.id.nav_home
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        repo = Repository(DbHelper(applicationContext))
+        if (savedInstanceState == null) {
+            homeFragment = HomeFragment()
+            recordFragment = RecordFragment()
+            expenseFragment = ExpenseFragment()
+            reportFragment = ReportFragment()
+            profileFragment = ProfileFragment()
 
-        adapter = RecordAdapter { record -> openEditor(record.id) }
-        binding.recyclerRecords.layoutManager = LinearLayoutManager(this)
-        binding.recyclerRecords.adapter = adapter
+            supportFragmentManager.beginTransaction()
+                .add(R.id.fragmentContainer, profileFragment, TAG_PROFILE).hide(profileFragment)
+                .add(R.id.fragmentContainer, reportFragment, TAG_REPORT).hide(reportFragment)
+                .add(R.id.fragmentContainer, expenseFragment, TAG_EXPENSE).hide(expenseFragment)
+                .add(R.id.fragmentContainer, recordFragment, TAG_RECORD).hide(recordFragment)
+                .add(R.id.fragmentContainer, homeFragment, TAG_HOME)
+                .commit()
+        } else {
+            /*
+             * 配置变更或进程恢复后，Fragment 由 FragmentManager 自动重建。
+             * 必须按 tag 取回既有实例：若直接 new，会得到未被添加到管理器的孤儿对象，
+             * 后续 show/hide 会抛 IllegalArgumentException。
+             */
+            homeFragment = supportFragmentManager.findFragmentByTag(TAG_HOME) ?: HomeFragment()
+            recordFragment = supportFragmentManager.findFragmentByTag(TAG_RECORD) ?: RecordFragment()
+            expenseFragment = supportFragmentManager.findFragmentByTag(TAG_EXPENSE) ?: ExpenseFragment()
+            reportFragment = supportFragmentManager.findFragmentByTag(TAG_REPORT) ?: ReportFragment()
+            profileFragment = supportFragmentManager.findFragmentByTag(TAG_PROFILE) ?: ProfileFragment()
+        }
 
-        binding.fabAdd.setOnClickListener { openEditor(0L) }
-
-        binding.spinnerVehicle.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>?, view: View?, position: Int, id: Long
-                ) {
-                    val v = vehicles.getOrNull(position) ?: return
-                    if (v.id != currentVehicleId) {
-                        currentVehicleId = v.id
-                        refresh()
+        binding.bottomNav.setOnItemSelectedListener(
+            object : NavigationBarView.OnItemSelectedListener {
+                override fun onNavigationItemSelected(item: MenuItem): Boolean {
+                    val id = item.itemId
+                    if (id == R.id.nav_home || id == R.id.nav_record ||
+                        id == R.id.nav_expense || id == R.id.nav_report ||
+                        id == R.id.nav_profile
+                    ) {
+                        switchTo(id)
+                        return true
                     }
+                    return false
                 }
-
-                override fun onNothingSelected(parent: AdapterView<*>?) = Unit
             }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        // 从编辑页返回时需要重新加载：车辆配置可能已改、记录可能已增删
-        loadVehicles()
-        refresh()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.action_settings) {
-            startActivity(Intent(this, SettingsActivity::class.java))
-            return true
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
-    private fun loadVehicles() {
-        vehicles = repo.listVehicles()
-        if (currentVehicleId == 0L && vehicles.isNotEmpty()) {
-            currentVehicleId = vehicles[0].id
-        }
-
-        val names = vehicles.map { it.name }
-        val spinnerAdapter = ArrayAdapter(
-            this, android.R.layout.simple_spinner_item, names
         )
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.spinnerVehicle.adapter = spinnerAdapter
 
-        val idx = vehicles.indexOfFirst { it.id == currentVehicleId }
-        if (idx >= 0) binding.spinnerVehicle.setSelection(idx)
+        // 导航选中项与 Fragment 显隐由不同机制各自恢复，可能不同步，此处强制对齐
+        switchTo(binding.bottomNav.selectedItemId)
     }
 
-    private fun refresh() {
-        if (currentVehicleId == 0L) {
-            adapter.submit(emptyList())
-            binding.tvEmpty.visibility = View.VISIBLE
-            return
+    /** 切换可见页。重复点选当前页时直接返回，避免无谓的事务提交 */
+    private fun switchTo(navId: Int) {
+        val target = fragmentFor(navId)
+        title = titleFor(navId)
+
+        if (navId == currentNavId && !target.isHidden) return
+        currentNavId = navId
+
+        val tx = supportFragmentManager.beginTransaction()
+        for (f in allFragments()) {
+            if (f === target) {
+                if (f.isHidden) tx.show(f)
+            } else if (!f.isHidden) {
+                tx.hide(f)
+            }
         }
-
-        val records = repo.listRecords(currentVehicleId)
-        adapter.submit(records)
-        binding.tvEmpty.visibility = if (records.isEmpty()) View.VISIBLE else View.GONE
-
-        val stats = repo.stats(currentVehicleId)
-        val placeholder = getString(R.string.value_placeholder)
-
-        binding.tvAvgEv.text =
-            if (stats.avgEv > 0.0) String.format(Locale.US, "%.2f", stats.avgEv) else placeholder
-        binding.tvAvgFuel.text =
-            if (stats.avgFuel > 0.0) String.format(Locale.US, "%.2f", stats.avgFuel) else placeholder
-        binding.tvSumCharge.text = String.format(Locale.US, "%.1f", stats.sumCharge)
-        binding.tvSumFuel.text = String.format(Locale.US, "%.1f", stats.sumFuel)
+        tx.commit()
     }
 
-    /** recordId 为 0 时表示新增 */
-    private fun openEditor(recordId: Long) {
-        val intent = Intent(this, RecordEditActivity::class.java)
-        intent.putExtra(RecordEditActivity.EXTRA_RECORD_ID, recordId)
-        intent.putExtra(RecordEditActivity.EXTRA_VEHICLE_ID, currentVehicleId)
-        startActivity(intent)
+    private fun fragmentFor(navId: Int): Fragment = when (navId) {
+        R.id.nav_record -> recordFragment
+        R.id.nav_expense -> expenseFragment
+        R.id.nav_report -> reportFragment
+        R.id.nav_profile -> profileFragment
+        else -> homeFragment
+    }
+
+    private fun allFragments(): List<Fragment> = listOf(
+        homeFragment, recordFragment, expenseFragment, reportFragment, profileFragment
+    )
+
+    private fun titleFor(navId: Int): String = when (navId) {
+        R.id.nav_record -> getString(R.string.nav_record)
+        R.id.nav_expense -> getString(R.string.nav_expense)
+        R.id.nav_report -> getString(R.string.nav_report)
+        R.id.nav_profile -> getString(R.string.nav_profile)
+        else -> getString(R.string.nav_home)
+    }
+
+    companion object {
+        private const val TAG_HOME = "tab_home"
+        private const val TAG_RECORD = "tab_record"
+        private const val TAG_EXPENSE = "tab_expense"
+        private const val TAG_REPORT = "tab_report"
+        private const val TAG_PROFILE = "tab_profile"
     }
 }

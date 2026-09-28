@@ -1,21 +1,47 @@
 package com.jtpv.powerconsumption.data
 
 /**
- * 车辆配置。
+ * 车辆配置与档案。
  *
  * 注意：插电混动车型（尤其秦 PLUS DM-i）各年款的电池容量与油箱容积差异很大，
  * 因此这两项必须作为「用户可配置项」，并配合年款快捷预设，不可在代码中硬编码。
+ *
+ * 档案类字段（车牌、到期日、保养间隔）用于提醒模块。到期日一律以
+ * yyyy-MM-dd 文本存储：一是排序与比较天然正确，二是空串即可表达「未设置」，
+ * 无需再引入可空列。
  */
 data class Vehicle(
     var id: Long = 0L,
     var name: String = "我的车",
     var batteryKwh: Double = 0.0,
     var tankLiter: Double = 0.0,
-    var presetIndex: Int = PRESET_CUSTOM
+    var presetIndex: Int = PRESET_CUSTOM,
+
+    // ===== 档案 =====
+    var plateNo: String = "",
+    var modelName: String = "",
+    var purchaseDate: String = "",
+    var odoCurrent: Long = 0L,
+
+    // ===== 到期日（空串表示未设置） =====
+    var insuranceExpiry: String = "",
+    var inspectionExpiry: String = "",
+
+    // ===== 保养规则（0 表示不启用该项提醒） =====
+    var maintIntervalKm: Long = DEFAULT_MAINT_KM,
+    var maintIntervalMonth: Int = DEFAULT_MAINT_MONTH
 ) {
     companion object {
         /** 与 VehiclePresets 中最后一项、strings.xml 的 preset_names 最后一项对应 */
         const val PRESET_CUSTOM = 6
+
+        /**
+         * 默认保养间隔。
+         * 取 10000 km / 12 个月 —— 插混车型因发动机启停频繁，保养周期通常短于
+         * 纯燃油车，但也不宜按 5000 km 过度提醒。用户可在档案页按保养手册调整。
+         */
+        const val DEFAULT_MAINT_KM = 10000L
+        const val DEFAULT_MAINT_MONTH = 12
     }
 }
 

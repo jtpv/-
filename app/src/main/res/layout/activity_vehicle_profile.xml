@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/page_bg"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- ===== 基本信息 ===== -->
+        <TextView
+            style="@style/FormLabel"
+            android:text="@string/label_profile_basic" />
+
+        <EditText
+            android:id="@+id/etPlate"
+            style="@style/FormInput"
+            android:hint="@string/hint_plate"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/etModel"
+            style="@style/FormInput"
+            android:hint="@string/hint_model"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/etPurchaseDate"
+            style="@style/FormInput"
+            android:hint="@string/hint_purchase_date"
+            android:inputType="date" />
+
+        <EditText
+            android:id="@+id/etOdoCurrent"
+            style="@style/FormInput"
+            android:hint="@string/hint_odo_current"
+            android:inputType="number" />
+
+        <!-- ===== 证照到期 ===== -->
+        <TextView
+            style="@style/FormLabel"
+            android:text="@string/label_profile_expiry" />
+
+        <EditText
+            android:id="@+id/etInsuranceExpiry"
+            style="@style/FormInput"
+            android:hint="@string/hint_insurance_expiry"
+            android:inputType="date" />
+
+        <EditText
+            android:id="@+id/etInspectionExpiry"
+            style="@style/FormInput"
+            android:hint="@string/hint_inspection_expiry"
+            android:inputType="date" />
+
+        <EditText
+            android:id="@+id/etLicenseExpiry"
+            style="@style/FormInput"
+            android:hint="@string/hint_license_expiry"
+            android:inputType="date" />
+
+        <!-- ===== 保养规则 ===== -->
+        <TextView
+            style="@style/FormLabel"
+            android:text="@string/label_profile_maint" />
+
+        <EditText
+            android:id="@+id/etMaintKm"
+            style="@style/FormInput"
+            android:hint="@string/hint_maint_km"
+            android:inputType="number" />
+
+        <EditText
+            android:id="@+id/etMaintMonth"
+            style="@style/FormInput"
+            android:hint="@string/hint_maint_month"
+            android:inputType="number" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:lineSpacingExtra="3dp"
+            android:text="@string/tip_profile_note"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/btnSaveProfile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:minHeight="48dp"
+            android:text="@string/action_save" />
+    </LinearLayout>
+</ScrollView>

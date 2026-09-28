@@ -17,6 +17,30 @@
     <color name="ev_color">#FF2E7D32</color>
     <color name="fuel_color">#FFE65100</color>
 
+    <!-- 费用类型配色：类型徽标用，色相区分度高，避免相近色难以辨认 -->
+    <color name="exp_maintenance">#FF5E35B1</color>
+    <color name="exp_repair">#FF6D4C41</color>
+    <color name="exp_insurance">#FF1E88E5</color>
+    <color name="exp_inspection">#FF00897B</color>
+    <color name="exp_parking">#FF546E7A</color>
+    <color name="exp_toll">#FF3949AB</color>
+    <color name="exp_wash">#FF00ACC1</color>
+    <color name="exp_fine">#FFD81B60</color>
+    <color name="exp_accessory">#FF8E24AA</color>
+    <color name="exp_other">#FF757575</color>
+
+    <!-- 提醒分级配色：绿 → 黄 → 橙 → 红，符合「越红越紧急」的通用认知 -->
+    <color name="level_normal">#FF2E7D32</color>
+    <color name="level_warn">#FFF9A825</color>
+    <color name="level_urgent">#FFEF6C00</color>
+    <color name="level_expired">#FFC62828</color>
+
+    <!-- 图表 -->
+    <color name="chart_fuel">#FFE65100</color>
+    <color name="chart_other">#FF1E88E5</color>
+    <color name="chart_grid">#FFE0E0E0</color>
+    <color name="chart_text">#FF757575</color>
+
     <!-- 自适应图标背景 -->
     <color name="ic_launcher_background">#FF1565C0</color>
 </resources>

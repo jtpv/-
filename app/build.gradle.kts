@@ -11,8 +11,10 @@ android {
         applicationId = "com.jtpv.powerconsumption"
         minSdk = 26
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        // 本次新增费用记账、保养与到期提醒、统计报表、车辆档案四个模块，
+        // 数据库同步升到 v2，故版本号递增
+        versionCode = 2
+        versionName = "1.1"
     }
 
     buildFeatures {
